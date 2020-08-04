@@ -10,7 +10,7 @@ const getDataByPage = (req)=>{
         const t_sql = 'select * from com_product';
         db.queryAsync(t_sql)
             .then(results=>{
-                // return db.queryAsync(sql);
+                // console.log(results);
                 resolve(results);
             })
             .catch(ex=>{
@@ -19,14 +19,13 @@ const getDataByPage = (req)=>{
     }) 
 };
 
-
-router.get('/product', async (req, res) => {
+router.get('/', async (req, res) => {
     const output = await getDataByPage(req);
     res.json(output);
 });
-router.get('/product/list', async (req, res) => {
+router.get('/list', async (req, res) => {
     const products = await getDataByPage(req);
-    res.render('product', {products});
+    res.render('product', { products });
 });
 
 

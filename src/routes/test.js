@@ -4,18 +4,17 @@ const db = require(__dirname +'/../db_connect');
 // const upload = require(__dirname+'/../upload');
 
 
-router.get('/test', async (req, res) => {
+router.get('/', async (req, res) => {
     res.render('test', {test: 222});
 });
-router.post('/test', (req, res)=>{
+router.post('/', (req, res)=>{
     console.log(req.body);
-
     const sql = "INSERT INTO `member`(`mName`, `mPhone`, `mEmail`,`mAccount`, `mPass`) VALUES (?,?,?,?,?)";
     
     db.queryAsync(sql, [
         req.body.mName,
-        09,
-        'woody',
+        0988888888,
+        'Ader@gmail.com',
         'abc',
         'cba'
     ])

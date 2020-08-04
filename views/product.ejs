@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,32 +11,38 @@
             width: 100%;
         }
 
-        th, td {
+        th,
+        td {
             text-align: left;
             padding: 8px;
         }
-        tr:nth-child(even) {background-color: #f2f2f2;}
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
+
 <body>
-    
+
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
-                <th scope="col">Age</th>
+                <th scope="col">Info</th>
             </tr>
         </thead>
         <tbody>
             <% for(let i=0; i < products.length; i++) { %>
-                <tr>
-                    <td><%= products[i].cpID %></td>
-                    <td><%= products[i].cpName %></td>
-                    <td><%= products[i].cpIntro %></td>
-                </tr>
+            <tr>
+                <td><%= products[i].cpID %></td>
+                <td><%= products[i].cpName %></td>
+                <td><%= products[i].cpIntro %></td>
+            </tr>
             <% } %>
         </tbody>
     </table>
 </body>
+
 </html>

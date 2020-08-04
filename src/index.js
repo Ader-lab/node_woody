@@ -9,22 +9,22 @@ app.use(express.json());
 
 
 // woody
-app.use('/', require(__dirname +'/routes/product'));
-app.use('/', require(__dirname +'/routes/test'));
+app.use('/product', require(__dirname +'/routes/product'));
+app.use('/test', require(__dirname +'/routes/test'));
 
 
 
 // ---------------------------------------------------------
-// 男
+// 男1
 
 
 
 // ---------------------------------------------------------
-// 女
+// 女1
 
 
 // ---------------------------------------------------------
-// 女
+// 女2
 
 
 // ---------------------------------------------------------
