@@ -2,6 +2,8 @@ var express = require("express");
 var mysql = require('mysql');
 var app = express();
 const db = require(__dirname + '/db_connect');
+const cors = require('cors');
+app.use(cors());
 // const upload = require(__dirname+'/upload');
 const session = require('express-session');
 app.use(session({
@@ -20,6 +22,14 @@ app.use((req, res, next) => {
     next();
 })
 
+// app.use((req, res, next) => {
+//     if(req.session.input) res.locals.input = req.session.input
+//     else res.locals.input = "";
+
+//     console.log("aa..."+req.session.input);
+//     next();
+// })
+
 app.set('view engine', 'ejs');
 app.use(express.json());
 
@@ -29,6 +39,8 @@ app.use('/product', require(__dirname +'/routes/product'));
 app.use('/registered', require(__dirname +'/routes/registered'));
 app.use('/login', require(__dirname +'/routes/login'));
 app.use('/productDetail', require(__dirname +'/routes/productDetail'));
+app.use('/ddd', require(__dirname +'/routes/ddd'));
+app.use('/test', require(__dirname +'/routes/test'));
 
 
 
