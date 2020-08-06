@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 });
 router.get('/list', async (req, res) => {
     const products = await getDataByPage(req);
-    res.render('product', { products });
+    res.render('product', { products, active: 'product' });
 });
 
 

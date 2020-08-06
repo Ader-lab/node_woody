@@ -24,7 +24,7 @@
 </head>
 
 <body>
-
+    <%- include('parts/navbar', {active}); %>
     <table class="table">
         <thead>
             <tr>
@@ -39,6 +39,7 @@
                 <td><%= products[i].cpID %></td>
                 <td><%= products[i].cpName %></td>
                 <td><%= products[i].cpIntro %></td>
+                <td><a href="/productDetail/<%= products[i].cpID %>">細節</a></td>
             </tr>
             <% } %>
         </tbody>

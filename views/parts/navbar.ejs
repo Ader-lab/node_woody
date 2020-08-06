@@ -13,11 +13,19 @@
 </head>
 <body>
     <h1><%= active %></h1>
-    <ul>
 
+    <div>
+        <% if(locals.login){ %>
+            <a href="/login/logout">登出</a>
+        <% } else { %>
+            <h3>未登入</h3>
+        <% } %>
+    </div>
+
+    <ul>
         <li><a <%if(active=="login"){%>class="active"<%}%> href="/login">login</a></li>
         <li><a <%if(active=="registered"){%>class="active"<%}%> href="/registered">registered</a></li>
-
+        <li><a <%if(active=="product"){%>class="active"<%}%> href="/product/list">product</a></li>
     </ul>
 
 

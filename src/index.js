@@ -14,6 +14,12 @@ app.use(session({
     }
 }));
 
+app.use((req, res, next) => {
+    if(req.session.login) res.locals.login = req.session.login
+    else res.locals.login = "";
+    next();
+})
+
 app.set('view engine', 'ejs');
 app.use(express.json());
 
@@ -22,6 +28,7 @@ app.use(express.json());
 app.use('/product', require(__dirname +'/routes/product'));
 app.use('/registered', require(__dirname +'/routes/registered'));
 app.use('/login', require(__dirname +'/routes/login'));
+app.use('/productDetail', require(__dirname +'/routes/productDetail'));
 
 
 
@@ -49,6 +56,10 @@ app.get('/try-session', (req, res)=>{
         session: req.session
     });
 })
+app.get('/sess', (req, res)=>{
+    res.json(req.session.login);
+});
+
 
 
 app.listen(3001,() => {
