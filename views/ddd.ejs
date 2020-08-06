@@ -9,20 +9,20 @@
 </head>
 
 <body>
-    <button>按鈕回傳跳轉</button>
+
+    <button>按鈕</button>
 
     <script>
 
-        let html = {
-            input: "123456",
+        let data = {
+            htmlInput: "<input type='text'>",
         }
 
         document.querySelector("button")
             .addEventListener("click", () => {
-
                 fetch('http://localhost:3001/ddd', {
                     method: 'POST',
-                    body: JSON.stringify(html),
+                    body: JSON.stringify(data),
                     headers: new Headers({
                         'Content-Type': 'application/json'
                     })
@@ -30,12 +30,10 @@
                     .catch(error => console.error('Error:', error))
                     .then(response => {
                         console.log(response);
+                        if (response.success) location.href = 'http://localhost:3001/test';
                     });
-                // location.href = 'http://localhost:3001/test';
-                window.location = 'http://localhost:3001/test';
 
             })
-
 
     </script>
 </body>

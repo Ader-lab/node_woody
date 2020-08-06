@@ -22,13 +22,11 @@ app.use((req, res, next) => {
     next();
 })
 
-// app.use((req, res, next) => {
-//     if(req.session.input) res.locals.input = req.session.input
-//     else res.locals.input = "";
-
-//     console.log("aa..."+req.session.input);
-//     next();
-// })
+app.use((req, res, next) => {
+    if(req.session.htmlInput) res.locals.htmlInput = req.session.htmlInput
+    else res.locals.htmlInput = "";
+    next();
+})
 
 app.set('view engine', 'ejs');
 app.use(express.json());
