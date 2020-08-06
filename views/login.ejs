@@ -9,26 +9,31 @@
 </head>
 
 <body>
-    <h1><%= test %></h1>
-    <input type='text' id="input">
+    <%- include('parts/navbar', {active}); %>
+
+    <input type='text' id="inputAccount" placeholder="帳號">
+    <input type='text' id="inputPass" placeholder="密碼">
     <button>按鈕</button>
 
     <script>
 
         let data = {
-            mName: ""
+            mAccount: "",
+            mPass: "",
         }
-        document.querySelector('input')
+        document.querySelector('#inputAccount')
             .addEventListener("input", (e) => {
-                data.mName = e.target.value;
-                console.log(data);
+                data.mAccount = e.target.value;
             })
+        document.querySelector('#inputPass')
+        .addEventListener("input", (e) => {
+            data.mPass = e.target.value;
+        })
 
 
         document.querySelector("button")
             .addEventListener("click", () => {
-
-                fetch('http://localhost:3001/test', {
+                fetch('http://localhost:3001/login', {
                     method: 'POST',
                     body: JSON.stringify(data),
                     headers: new Headers({
@@ -37,7 +42,6 @@
                 }).then(res => res.json())
                     .catch(error => console.error('Error:', error))
                     .then(response => console.log('Success:', response));
-
 
             })
 

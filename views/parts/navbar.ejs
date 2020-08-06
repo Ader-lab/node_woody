@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .active {
+            font-size: 3rem;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1><%= active %></h1>
+    <ul>
+
+        <li><a <%if(active=="login"){%>class="active"<%}%> href="/login">login</a></li>
+        <li><a <%if(active=="registered"){%>class="active"<%}%> href="/registered">registered</a></li>
+
+    </ul>
+
+
+</body>
+</html>

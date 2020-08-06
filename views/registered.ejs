@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <%- include('parts/navbar', {active}); %>
+
+    <input type='text' id="inputAccount" placeholder="帳號">
+    <input type='text' id="inputPass" placeholder="密碼">
+    <button>按鈕</button>
+
+    <script>
+        let data = {
+            mAccount: "",
+            mPass: "",
+        }
+        document.querySelector('#inputAccount')
+            .addEventListener("input", (e) => {
+                data.mAccount = e.target.value;
+            })
+        document.querySelector('#inputPass')
+        .addEventListener("input", (e) => {
+            data.mPass = e.target.value;
+        })
+
+
+        document.querySelector("button")
+            .addEventListener("click", () => {
+                fetch('http://localhost:3001/registered', {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
+                }).then(res => res.json())
+                    .catch(error => console.error('Error:', error))
+                    .then(response => console.log('Success:', response));
+
+            })
+
+    </script>
+</body>
+
+</html>
