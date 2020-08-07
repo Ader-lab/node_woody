@@ -19,6 +19,7 @@ app.use(session({
 app.use((req, res, next) => {
     if(req.session.login) res.locals.login = req.session.login
     else res.locals.login = "";
+    console.log(res.locals.login);
     next();
 })
 
