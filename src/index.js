@@ -29,6 +29,8 @@ app.use('/product', require(__dirname +'/routes/product'));
 app.use('/registered', require(__dirname +'/routes/registered'));
 app.use('/login', require(__dirname +'/routes/login'));
 app.use('/productDetail', require(__dirname +'/routes/productDetail'));
+app.use('/member', require(__dirname +'/routes/member'));
+app.use('/user', require(__dirname +'/routes/user'));
 
 
 
