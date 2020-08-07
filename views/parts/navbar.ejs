@@ -17,6 +17,7 @@
     <div>
         <% if(locals.login){ %>
             <a href="/login/logout">登出</a>
+            <li><a <%if(active=="user"){%>class="active"<%}%> href="/user">user</a></li>
         <% } else { %>
             <h3>未登入</h3>
         <% } %>
