@@ -1,229 +1,34 @@
-/*
-baseUrl:  /address-book
-
-CRUD:
-    Create (insert)
-        get:  /add
-        post: /add (...)
-
-    Update
-        get:  /edit/:sid
-        post: /edit/:sid (...)
-
-    Delete
-        post: /delete/:sid
-
-    Read
-        get: /:page/:category?
- */
-
 const express = require('express');
-const moment = require('moment-timezone');
-const upload = require(__dirname+'/../upload');
-const db = require(__dirname +'/../db_connect');
 const router = express.Router();
+const db = require(__dirname +'/../db_connect');
+// const upload = require(__dirname+'/../upload');
 
-router.use((req, res, next)=>{
-    res.locals.title = '通訊錄';
-    next();
+
+router.get('/', async (req, res) => {
+    res.render('ddd');
 });
 
-
-router.get('/delete/:cID?', (req, res)=>{
-    const sql = "DELETE FROM `students` WHERE cID=?";
-    db.queryAsync(sql, [req.params.cID])
-        .then(results=>{
-            // res.redirect('/address-book');
-            if(req.get('Referer')){
-                // 如果有[從哪裡來]的資料
-                res.redirect( req.get('Referer') );
-            } else {
-                res.redirect('/address-book');
-            }
-
-            /*
-            res.json({
-                success: true
-            });
-
-             */
-        })
-        .catch(ex=>{
-            console.log('ex:', ex);
-            res.json({
-                success: false,
-                info: '無法刪除資料'
-            });
-        })
-});
-
-
-
-
-router.get('/add',(req, res)=>{
-    res.render('address-book/add');
-
-});
-
-// upload.none() 用來解析 multipart/form-data 格式的 middleware
-router.post('/add', upload.none(), (req, res)=>{
-    const output = {
-        success: false,
-        error: '',
+router.post('/', (req, res)=>{
+    let output = {
+        success: true,
+        body: req.body
     };
-
-    if(req.body.cName.length<2){
-        output.error = '姓名字元長度太短';
-        return res.json(output);
-    }
-
-    const email_pattern = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    if(!email_pattern.test(req.body.cEmail)){
-        output.error = 'Email 格式錯誤';
-        return res.json(output);
-    }
-
-    const sql = "INSERT INTO `students`(`cName`, `cEmail`, `cPhone`, `cBirthday`, `cAddr`) VALUES (?,?,?,?,?)";
-    
-    db.queryAsync(sql, [
-        req.body.cName,
-        req.body.cEmail,
-        req.body.cPhone,
-        req.body.cBirthday,
-        req.body.cAddr
-    ])
+    const sql = 'INSERT INTO `html`(`html`) VALUES (?)';
+    db.queryAsync(sql, [ req.body.htmlInput ])
         .then(results=>{
-            output.results = results;
-            if(results.affectedRows===1){
-                output.success = true;
-            }
+            req.session.htmlInput = req.body.htmlInput;
+            // 一定要有回傳值，不然fetch不到東西
             res.json(output);
         })
         .catch(ex=>{
             console.log('ex:', ex);
         })
-
-    //res.json(req.body);
+        
 });
 
-
-router.get('/edit/:cID',(req, res)=>{
-    const sql = "SELECT * FROM students WHERE cID=?";
-    // console.log(req.params.cID);
-    db.queryAsync(sql, [req.params.cID])
-        .then(results=>{
-            if(results.length){
-                results[0].birthday = moment(results[0].birthday).format('YYYY-MM-DD');
-                res.render('address-book/edit', results[0]);
-            } else {
-                res.redirect('/address-book');
-            }
-        })
-        .catch(ex=>{
-            console.log('ex:', ex);
-        })
-});
-
-
-router.post('/edit', upload.none(), (req, res)=>{
-    const output = {
-        success: false,
-        error: '',
-    };
-    // TODO: 應該檢查表單進來的資料
-    if(req.body.cName.length<2){
-        output.error = '姓名字元長度太短';
-        return res.json(output);
-    }
-
-    const email_pattern = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    if(!email_pattern.test(req.body.cEmail)){
-        output.error = 'Email 格式錯誤';
-        return res.json(output);
-    }
-
-    const data = {...req.body};  // 淺複製， 因為之後要刪掉ID所以保留一份舊的
-    delete data.cID; // 移除 cID, 因為ID不需要被修改，所以把它刪掉
-   
-    const sql = "UPDATE `students` SET ? WHERE cID=?";
-    // 第一個問號代表db.queryAsync(sql, [data, req.body.cID])的第一個參數，就是data， 以此類推
-    db.queryAsync(sql, [data, req.body.cID])
-        .then(results=>{
-            output.results = results;
-            if(results.changedRows===1){
-                output.success = true;
-            } else {
-                output.error = '資料沒有變更';
-            }
-            res.json(output);
-        })
-        .catch(ex=>{
-            console.log('ex:', ex);
-        })
-
-    //res.json(req.body);
-});
-
-
-
-const getDataByPage = (req)=>{
-    const perPage = 3;
-    return new Promise((resolve, reject)=>{ 
-    if(!req.session.loginUser){
-        resolve({
-            success: false,
-            info: '請登入會員'
-        });
-        return;
-    }
-    
-    let page = parseInt(req.params.page) || 1;
-    const output = {
-        totalRows: 0, // 總筆數
-        perPage: perPage, // 每一頁最多幾筆
-        totalPages: 0, //總頁數
-        page: page, // 用戶要查看的頁數
-        rows: 0, // 當頁的資料
-    };
-
-    const t_sql = "SELECT COUNT(1) num FROM students";
-    db.queryAsync(t_sql)
-        .then(results=>{
-            output.totalRows = results[0].num;
-            output.totalPages = Math.ceil(output.totalRows/perPage);
-            if(output.page < 1) output.page=1;
-            if(output.page > output.totalPages) output.page=output.totalPages;
-            const sql = `SELECT * FROM students LIMIT ${(output.page-1)*output.perPage}, ${output.perPage}`;
-                                                    // 從第n筆，取3筆
-                                                    // 第1頁的話 是從第0比開始，第2頁的話(2-1)*3索引值是三，就是從第4筆開始
-            return db.queryAsync(sql);
-        })
-        .then(results=>{
-            const fm = 'YYYY-MM-DD';
-            for(let i of results){
-                i.cBirthday = moment(i.cBirthday).format(fm);
-            }
-            output.rows = results;
-            output.user = req.session.loginUser || {};
-            output.success = true;
-            resolve(output);
-        })
-        .catch(ex=>{
-            reject(ex);
-        });
-
-    }) 
-};
-
-
-
-router.get('/list/:page?', async (req, res) => {
-    const output = await getDataByPage(req);
-    res.json(output);
-});
-router.get('/:page?', async (req, res) => {
-    const output = await getDataByPage(req);
-    res.render('address-book/list', output);
-});
+router.get('/logout', (req, res) => {
+    delete req.session.login;
+    res.redirect('/product/list');
+})
 
 module.exports = router;
