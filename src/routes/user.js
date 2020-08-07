@@ -17,15 +17,30 @@ const db = require(__dirname +'/../db_connect');
 // });
 
 router.get('/', (req, res) => {
-    res.json(req.session.login)
-    // const t_sql = 'select * from member where mID =' + req.params.mID;
-    // db.queryAsync(t_sql)
-    //     .then(results=>{
-    //         res.json(results)
-    //     })
-    //     .catch(ex=>{
-    //         console.log(ex);
-    //     });
+    const t_sql = 'select * from member where mID =' + req.session.login.mID;
+    db.queryAsync(t_sql)
+        .then(results=>{
+            res.render('user',{ results, active: 'user' })
+        })
+        .catch(ex=>{
+            console.log(ex);
+        });
+});
+
+router.post('/', (req, res) => {
+    const t_sql = 'UPDATE `member` SET `mName`=?,`mPhone`=?,`mEmail`=? WHERE mID =' + req.session.login.mID
+    db.queryAsync(t_sql,[
+        req.body.mName,
+        req.body.mPhone,
+        req.body.mEmail,
+    ])
+        .then(results=>{
+            res.json(results);
+        })
+        .catch(ex=>{
+            console.log(ex);
+        });
+
 });
 
 

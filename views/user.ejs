@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('parts/navbar', {active}); %>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Info</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" id="mName" value="<%= results[0].mName %>"></td>
+                <td><input type="text" id="mPhone" value="<%= results[0].mPhone %>"></td>
+                <td><input type="text" id="mEmail" value="<%= results[0].mEmail %>"></td>
+            </tr>
+        </tbody>
+        <button>送出</button>
+    </table>
+    <script>
+        let editInput = {
+            mName: "",
+            mPhone: "",
+            mEmail: "",
+        }
+        document.querySelector("#mName")
+            .addEventListener("input", (e) => {
+                editInput.mName = e.target.value;
+            })
+        document.querySelector("#mPhone")
+            .addEventListener("input", (e) => {
+                editInput.mPhone = e.target.value;
+            })
+        document.querySelector("#mEmail")
+            .addEventListener("input", (e) => {
+                editInput.mEmail = e.target.value;
+            })
+
+
+        document.querySelector("button")
+            .addEventListener("click", () => {
+                fetch('http://localhost:3001/user', {
+                    method: 'POST',
+                    body: JSON.stringify(editInput),
+                    headers: new Headers({
+                        'Content-Type': 'application/json'
+                    })
+                })
+                    .then(res => res.json())
+                    .catch(error => console.error('Error:', error))
+                    .then(response => {
+                        console.log(response);
+                    });
+
+            })
+        
+        
+            
+    </script>
+</body>
+
+</html>
