@@ -16,6 +16,7 @@ app.use(session({
     }
 }));
 
+// 要放在app.use路由的上面，因為這樣跑到路由前才會進來這裡。
 app.use((req, res, next) => {
     if(req.session.login) res.locals.login = req.session.login
     else res.locals.login = "";
