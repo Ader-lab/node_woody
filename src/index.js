@@ -19,6 +19,7 @@ app.use(session({
 app.use((req, res, next) => {
     if(req.session.login) res.locals.login = req.session.login
     else res.locals.login = "";
+    console.log(res.locals.login);
     next();
 })
 
@@ -37,8 +38,13 @@ app.use('/product', require(__dirname +'/routes/product'));
 app.use('/registered', require(__dirname +'/routes/registered'));
 app.use('/login', require(__dirname +'/routes/login'));
 app.use('/productDetail', require(__dirname +'/routes/productDetail'));
+
+app.use('/member', require(__dirname +'/routes/member'));
+app.use('/user', require(__dirname +'/routes/user'));
+
 app.use('/ddd', require(__dirname +'/routes/ddd'));
 app.use('/test', require(__dirname +'/routes/test'));
+
 
 
 

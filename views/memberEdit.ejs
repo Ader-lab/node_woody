@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <%- include('parts/navbar', {active}); %>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let i=0; i < results.length; i++) { %>
+            <tr>
+                <!-- <td><a href="/member/edit/<%= results[i].mID %>">修改</a></td> -->
+                <td>213</td>
+                <td><%= results[i].mID %></td>
+                <td><input type="text" value="<%= results[i].mName %>"></td>
+            </tr>
+            <% } %>
+            
+        </tbody>
+    </table>
+</body>
+
+</html>
