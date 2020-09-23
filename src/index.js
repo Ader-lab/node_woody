@@ -43,8 +43,6 @@ app.use('/productDetail', require(__dirname +'/routes/productDetail'));
 app.use('/member', require(__dirname +'/routes/member'));
 app.use('/user', require(__dirname +'/routes/user'));
 
-app.use('/ddd', require(__dirname +'/routes/ddd'));
-app.use('/test', require(__dirname +'/routes/test'));
 
 
 
