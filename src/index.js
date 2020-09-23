@@ -80,6 +80,6 @@ app.get('/sess', (req, res)=>{
 
 
 app.listen(3001,() => {
-    console.log('run-3001');
+    console.log('localhost:3001');
 });
 
