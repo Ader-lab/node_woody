@@ -34,6 +34,7 @@ app.set('view engine', 'ejs');
 app.use(express.json());
 
 
+// https://expressjs.com/zh-tw/guide/routing.html
 // 男1
 app.use('/product', require(__dirname +'/routes/product'));
 app.use('/registered', require(__dirname +'/routes/registered'));
